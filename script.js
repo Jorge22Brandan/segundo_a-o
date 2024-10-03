@@ -99,18 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const elementos = document.querySelectorAll('.elemento');
-    const infoElemento = document.getElementById('info-elemento');
-
-    elementos.forEach(elemento => {
-        elemento.addEventListener('click', function() {
-            const simbolo = this.getAttribute('data-simbolo');
-            const nombre = this.getAttribute('data-nombre');
-            const numero = this.getAttribute('data-numero');
-            infoElemento.textContent = `Símbolo: ${simbolo}, Nombre: ${nombre}, Número Atómico: ${numero}`;
-        });
-    });
 });
 
 
