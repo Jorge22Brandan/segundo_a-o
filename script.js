@@ -97,8 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showQuestion(questions[currentQuestionIndex]);
 
 
-   
-});
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const elementos = document.querySelectorAll('.elemento');
@@ -113,5 +112,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+
+
+    
+   
+});
+
+
 
 
