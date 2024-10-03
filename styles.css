@@ -63,28 +63,7 @@ th {
     align-items: center;
     font-size: 30px;
 
-.tabla-periodica {
-    display: grid;
-    grid-template-columns: repeat(18, 50px);
-    gap: 5px;
-    justify-content: center;
-}
-
-    .elemento {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-}
-
-#info-elemento {
-    margin-top: 20px;
-    font-size: 18px;
-}    
-
-    
+   
     
     
 }
