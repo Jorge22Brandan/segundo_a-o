@@ -6,33 +6,38 @@
     <title>Tabla Periódica</title>
     <link rel="stylesheet" href="styles.css">
 
-
-
+  
 </head>
 <body>
     <header>
         <h1>Fisico-Química: 2° Año - 2024</h1>
     </header>
-
-
-
-
-    <audio id="miAudio" autoplay loop></audio>
-        <source src="https://incompetech.com/music/royalty-free/mp3-royaltyfree/Run%20Amok.mp3" type="audio/mpeg">
-    </audio>
-    <button onclick="playAudio()">Reproducir</button>
-    <button onclick="pauseAudio()">Pausar</button>
-
-
-
-
+ 
     <main>
 
+            <!--Codigo sobre sopa de letras-->
+
+    <h3>Actividad 1: Realiza la sopa de letras y acumula 1000 puntos, luego haz una captura de pantalla</h3>
+
+    <h4>Sopa de Letras - Elementos Químicos</h4>
+    <div id="#game">
+        <table id="wordSearch">
+            <!-- Aquí iría la sopa de letras generada dinámicamente -->
+        </table>
+        <p>Puntuación: <span id="score">0</span></p>
+    </div>
+    <audio id="backgroundMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2023/03/28/audio_110660.mp3?filename=game-background-music-loop-110660.mp3" type="audio/mpeg">
+        Tu navegador no soporta la reproducción de audio.
+    </audio>
+
+    <!--Fin de Codigo sobre sopa de letras-->
 
 
         <section id="info">
             <h2>La Tabla Periódica</h2>
-            <h3>Lee el siguiente texto y luego realiza las actividades sobre tabla periódica </h3>
+            <h3>Actividad 2: Lee el siguiente texto y luego participa del juego sobre tabla periódica,
+                para aprobar debes obtener 60 o más puntos </h3>
             <!-- Aquí se incluirá la información sobre grupos, períodos, etc. -->
              <h3>Conceptos básicos</h3>
              <p>El numero atómico se simboliza con la letra "Z" y representa el número de protones que tiene un átomo.
@@ -140,11 +145,9 @@
             </ul> 
             
            
-
-
         </section>
         <section id="user-info">
-            <h3>Realiza las actividades sobre tabla periódica</h3>
+            <h3>Realiza las actividades sobre tabla periódica, luego haz una captura de pantalla</h3>
             <h3>Identifícate para participar</h3>
             <form id="user-form">
                 <label for="first-name">Nombre:</label>
@@ -158,7 +161,7 @@
             <h2>Juego</h2>
             <div id="question-container"></div>
             <div id="score-container">
-                <p>Puntuación: <span id="score">0</span></p>
+               <!-- <p>Puntuación: <span id="score">0</span></p>-->
             </div>
         </section>
         <section id="scoreboard">
@@ -176,27 +179,21 @@
                 </tbody>
             </table>
         </section>
+
+
+<!-- Codigo google forms y evaluacion final-->
+
+<h3>Actividad 3: Ingresa al enlace y completa el formulario: <a href="https://forms.gle/wQearj4KhPDS8w8D8">Evaluación final</a></h3> 
+
+       <!--Fin del codigo google forms-->
+
     </main>
+
     <footer>
         <p>Creado por [Profesor: Brandan, Jorge + IA]</p>
     </footer>
     <script src="script.js"></script>
-
-    <script>
-        var audio = document.getElementById("miAudio");
-
-        function playAudio() {
-            audio.play();
-        }
-
-        function pauseAudio() {
-            audio.pause();
-        }
-    </script>
-
     
-
-
 </body>
 </html>
 
