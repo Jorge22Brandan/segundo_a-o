@@ -97,31 +97,99 @@ document.addEventListener('DOMContentLoaded', () => {
     showQuestion(questions[currentQuestionIndex]);
 
 
-
-
-});
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-    
-
-
-
-
-    
    
+
 });
+
+
+
+// sopa de letras
+
+const elements = ["HIDROGENO", "OXIGENO", "CARBONO", "NITROGENO", "CALCIO", "HIERRO", "SODIO", "POTASIO","HELIO",
+    "CROMO","ORO","PLATA","PLOMO","LITIO","BORO","BROMO","ARGON","CESIO"];
+const gridSize = 12;
+let score = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const table = document.getElementById("wordSearch");
+    const music = document.getElementById("backgroundMusic");
+    music.play();
+
+    // Generar la sopa de letras
+    const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+    elements.forEach(element => {
+        placeWordInGrid(grid, element);
+    });
+    fillEmptySpaces(grid);
+    renderGrid(table, grid);
+
+    // Añadir evento de clic a las celdas
+    table.addEventListener("click", (e) => {
+        if (e.target.tagName === "TD") {
+            e.target.classList.toggle("found");
+            updateScore();
+        }
+    });
+});
+
+function placeWordInGrid(grid, word) {
+    let placed = false;
+    while (!placed) {
+        const direction = Math.floor(Math.random() * 2); // 0: horizontal, 1: vertical
+        const row = Math.floor(Math.random() * gridSize);
+        const col = Math.floor(Math.random() * gridSize);
+        if (canPlaceWord(grid, word, row, col, direction)) {
+            for (let i = 0; i < word.length; i++) {
+                if (direction === 0) {
+                    grid[row][col + i] = word[i];
+                } else {
+                    grid[row + i][col] = word[i];
+                }
+            }
+            placed = true;
+        }
+    }
+}
+
+function canPlaceWord(grid, word, row, col, direction) {
+    if (direction === 0 && col + word.length > gridSize) return false;
+    if (direction === 1 && row + word.length > gridSize) return false;
+    for (let i = 0; i < word.length; i++) {
+        if (direction === 0 && grid[row][col + i] !== '') return false;
+        if (direction === 1 && grid[row + i][col] !== '') return false;
+    }
+    return true;
+}
+
+function fillEmptySpaces(grid) {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+            if (grid[row][col] === '') {
+                grid[row][col] = letters[Math.floor(Math.random() * letters.length)];
+            }
+        }
+    }
+}
+
+function renderGrid(table, grid) {
+    table.innerHTML = '';
+    grid.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+            const td = document.createElement("td");
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
+}
+
+function updateScore() {
+    const foundCells = document.querySelectorAll(".found").length;
+    score = foundCells * 10;
+    document.getElementById("score").textContent = score;
+}
 
 
 
