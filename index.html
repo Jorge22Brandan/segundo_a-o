@@ -1,200 +1,279 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla Periódica</title>
-    <link rel="stylesheet" href="styles.css">
-
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabla Periódica - 2° Año</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;background:#f4f4f4;color:#222;line-height:1.5}
+header,footer{background:#49c45e;color:#fff;text-align:center;padding:1em}
+main{max-width:900px;margin:auto;padding:16px}
+section{background:#fff;border-radius:10px;padding:16px;margin:16px 0;box-shadow:0 1px 4px #0002}
+h1,h2{text-align:center;margin:.3em 0}
+h2{color:#1d7a31}
+button{margin:4px;padding:10px 18px;background:#007BFF;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1em}
+button:hover{background:#0056b3}
+input,select{padding:8px;margin:3px;border:1px solid #bbb;border-radius:6px;font-size:1em;max-width:100%}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #ddd;padding:6px;text-align:left}
+th{background:#f2f2f2}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.card{background:#eefaf0;border-left:5px solid #49c45e;padding:10px;border-radius:6px}
+.formula{font-size:1.6em;text-align:center}
+#grid{border-collapse:collapse;margin:10px auto;width:auto;user-select:none}
+#grid td{border:2px solid #24a84c;width:30px;height:30px;padding:0;text-align:center;font-weight:bold;cursor:pointer;background:#fff}
+#grid td.sel{background:#9ad0ff}
+#grid td.found{background:#ffe94d}
+#words{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+#words span{background:#eee;padding:3px 9px;border-radius:12px;font-size:.9em}
+#words span.ok{background:#49c45e;color:#fff;text-decoration:line-through}
+.bar{text-align:center;font-weight:bold;margin:8px 0}
+.opt{display:block;width:100%;text-align:left;background:#fff;color:#222;border:2px solid #007BFF}
+.opt:hover{background:#e6f1ff}
+.msg{text-align:center;font-weight:bold;color:#1d7a31}
+.warn{background:#fff3cd;padding:8px;border-radius:6px;font-size:.9em}
+.hide{display:none}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Fisico-Química: 2° Año - 2024</h1>
-    </header>
- 
-    <main>
+<header><h1>Físico-Química: 2° Año - 2024</h1><div>La Tabla Periódica</div></header>
+<main>
 
-            <!--Codigo sobre sopa de letras-->
+<section id="teoria">
+<h2>📖 Primero lee</h2>
+<div class="cards">
+<div class="card"><b>Número atómico (Z)</b><br>Cantidad de protones. Un átomo neutro tiene igual cantidad de protones y electrones. Se busca en la tabla periódica.</div>
+<div class="card"><b>Número másico (A) y neutrones (N)</b><br>A = protones + neutrones. Para calcular neutrones: <b>N = A − Z</b>.</div>
+<div class="card"><b>Símbolos químicos</b><br>Primera letra mayúscula y, si hay segunda, minúscula (Co, no CO).</div>
+<div class="card"><b>Mendeléyev</b><br>Químico ruso (Tobolsk, 1834). En 1869 creó la primera tabla periódica y predijo elementos aún no descubiertos.</div>
+<div class="card"><b>Grupos y períodos</b><br>18 grupos (columnas) con propiedades similares y 7 períodos (filas) que indican los niveles de energía. Los gases nobles están en el grupo 18 y casi no reaccionan.</div>
+<div class="card"><b>Electronegatividad</b><br>Capacidad de un átomo de atraer electrones en un enlace. El flúor es el más electronegativo (4,0); el cesio es de los menos (0,72).</div>
+<div class="card"><b>Electrones de valencia</b><br>Están en el último nivel de energía y son los que forman enlaces (iónicos, covalentes, metálicos).</div>
+<div class="card"><b>Densidad</b><br>Relación entre masa y volumen:<div class="formula">δ = masa / volumen</div>Unidades: g/mL, g/cm³ o kg/m³.</div>
+</div>
+<p><b>Estructuras cristalinas comunes:</b> cúbica simple, cúbica centrada en el cuerpo, cúbica centrada en las caras, hexagonal compacta, tetragonal, ortorrómbica, romboédrica y monoclínica.</p>
+<p>Más información: <a href="https://ptable.com/?lang=es" target="_blank">Ptable (tabla interactiva)</a> · <a href="https://es.periodic-table.io/" target="_blank">Periodic-table.io</a> · <a href="https://es.wikipedia.org/wiki/Tabla_peri%C3%B3dica_de_los_elementos" target="_blank">Wikipedia</a></p>
+</section>
 
-    <h3>Actividad 1: Realiza la sopa de letras y acumula 1000 puntos, luego haz una captura de pantalla</h3>
+<section id="registro">
+<h2>👥 Registro del equipo</h2>
+<p>Pueden jugar solos, de a dos o de a tres. Escriban nombre y apellido de cada integrante.</p>
+<input id="m1" placeholder="Integrante 1 (obligatorio)">
+<input id="m2" placeholder="Integrante 2 (opcional)">
+<input id="m3" placeholder="Integrante 3 (opcional)">
+<input id="curso" placeholder="Curso y división (ej: 2° B)">
+<button id="btnReg">Registrar equipo</button>
+<div id="teamMsg" class="msg"></div>
+<div id="cfgWarn" class="warn hide">⚠️ Falta configurar SCRIPT_URL: los puntajes se guardan solo en este dispositivo.</div>
+</section>
 
-    <h4>Sopa de Letras - Elementos Químicos</h4>
-    <div id="#game">
-        <table id="wordSearch">
-            <!-- Aquí iría la sopa de letras generada dinámicamente -->
-        </table>
-        <p>Puntuación: <span id="score">0</span></p>
-    </div>
-    <audio id="backgroundMusic" loop>
-        <source src="https://cdn.pixabay.com/download/audio/2023/03/28/audio_110660.mp3?filename=game-background-music-loop-110660.mp3" type="audio/mpeg">
-        Tu navegador no soporta la reproducción de audio.
-    </audio>
+<section id="sopa">
+<h2>🔤 Actividad 1: Sopa de letras</h2>
+<p>Encuentra los 10 elementos. Toca la <b>primera letra</b> y luego la <b>última</b> de cada palabra (puede estar en horizontal, vertical o diagonal, al derecho o al revés). Cuanto más rápido, más puntos.</p>
+<div style="text-align:center"><button id="btnSopa">Comenzar sopa de letras</button></div>
+<div id="sopaGame" class="hide">
+<div class="bar">⏱ <span id="sTime">0</span> s · Encontradas: <span id="sFound">0</span>/10</div>
+<div id="words"></div>
+<div style="overflow-x:auto"><table id="grid"></table></div>
+</div>
+<div id="sopaEnd" class="msg"></div>
+<h3>🏆 Ranking sopa de letras</h3>
+<div id="rankSopa">Cargando...</div>
+</section>
 
-    <!--Fin de Codigo sobre sopa de letras-->
+<section id="quiz">
+<h2>🧪 Actividad 2: Juego de tabla periódica</h2>
+<p>20 preguntas al azar. Para aprobar necesitas <b>60 puntos o más</b> (de 100). Se registra tu puntaje y tu tiempo.</p>
+<div style="text-align:center"><button id="btnQuiz">Comenzar juego</button></div>
+<div id="quizGame" class="hide">
+<div class="bar">⏱ <span id="qTime">0</span> s · Pregunta <span id="qNum">1</span>/20</div>
+<div id="qBox"></div>
+</div>
+<h3>🏆 Ranking juego de tabla periódica</h3>
+<div id="rankQuiz">Cargando...</div>
+</section>
 
+<section>
+<h2>🎮 Practica antes de la evaluación</h2>
+<p><a href="https://es.educaplay.com/recursos-educativos/14962724-tabla_periodica_elementos.html" target="_blank">JUEGA Y LOGRA EL PRIMER PUESTO</a></p>
+<h2>📝 Actividad 3: Evaluación final</h2>
+<p>Ingresa al enlace y completa el formulario: <a href="https://forms.gle/wQearj4KhPDS8w8D8" target="_blank">Evaluación final</a></p>
+</section>
+</main>
+<footer><p>Creado por [Profesor: Brandan, Jorge + IA]</p></footer>
 
-        <section id="info">
-            <h2>La Tabla Periódica</h2>
-            <h3>Actividad 2: Lee el siguiente texto y luego participa del juego sobre tabla periódica,
-                para aprobar debes obtener 60 o más puntos </h3>
-            <!-- Aquí se incluirá la información sobre grupos, períodos, etc. -->
-             <h3>Conceptos básicos</h3>
-             <p>El numero atómico se simboliza con la letra "Z" y representa el número de protones que tiene un átomo.
-                Para conocer dicho número, debo recurrir a la tabla periódica.
-                Como el átomo es eléctricamente neutro, tiene la misma cantidad de protones y de electrones.                
-             </p>
-             <p>Los simbolos quimicos se encuentran en la tabla periodica y simbolizan cada uno de los elementos quimicos conocidos.
-                Estos símbolos se deben escribir, la primera letra mayúscula, y la segunda (si hubiera) con minúscula.
-             </p>
-             <p>
-                Dmitri Ivánovich Mendeléyev fue un químico ruso, nacido el 8 de febrero de 1834 en Tobolsk, Rusia. 
-                Es conocido principalmente por haber creado la primera versión de la tabla periódica de los elementos en 1869.
-                Esta tabla organizaba los elementos químicos según sus propiedades y masas atómicas, lo que permitió predecir 
-                la existencia y propiedades de elementos aún no descubiertos en su época.
-             </p>
-             <p>
-                La tabla periódica actual está organizada en 18 grupos (columnas verticales) y 8 períodos (filas horizontales).
-                Cada grupo contiene elementos con propiedades químicas similares, mientras que cada período representa un nuevo
-                nivel de energía en los átomos de los elementos.
-             </p>
-             <p>
-                La masa atómica representa la cantidad de materia presente en un átomo, y se calcula sumando las masas de los protones
-                y neutrones en su núcleo. Esta masa se expresa en unidades de masa atómica (u) o daltons (Da). La masa atómica se simboliza
-                con la letra A. Por ejemplo, en la notación de un elemento químico, el número másico (A) se coloca en la esquina superior
-                izquierda del símbolo del elemento.
-             </p>
-             <p>
-                Los neutrones se encuentran en el núcleo atómico, junto con los protones. Para saber el número de neutrones que tiene cada
-                átomo se debe conocer A y Z y se debe restar A - Z. Los neutrones se simbolizan con la letra N.
-             </p>
-             <p>
-                Los gases nobles son elementos químicos que se encuentran en el grupo 18 de la tabla periódica. Son conocidos por su baja
-                reactividad química, lo que significa que no suelen formar compuestos fácilmente con otros elementos.
-             </p>
-             <p>
-                La tabla periódica tiene 7 períodos. Cada período es una fila horizontal que representa un nivel energético en el que
-                se encuentran los electrones de los elementos.
-             </p>
+<script>
+// ====== CONFIGURACIÓN ======
+// Pegar aquí la URL de la aplicación web de Google Apps Script (termina en /exec).
+const SCRIPT_URL = "";
+// ===========================
 
-             <p>
-                Los elementos químicos pueden cristalizar en varias estructuras cristalinas, dependiendo de cómo se organizan sus átomos
-                en el espacio. Aquí tienes algunos de los tipos más comunes
-             </p>
+const $ = id => document.getElementById(id);
+let team = null;
 
-             <ul>
-                <li>Cúbica centrada en el cuerpo</li>
-                <li>Cúbica centrada en las caras</li>
-                <li>Hexagonal compacta</li>
-                <li>Tetragonal</li>
-                <li>Ortorrómbica</li>
-                <li>Romboédrica</li>
-                <li>Monoclínica</li>
-                <li>Cúbica simple</li>
-              </ul>
-              
-             <p>
-                La electronegatividad es la capacidad de un átomo para atraer electrones hacia sí mismo cuando está formando un enlace 
-                químico con otro átomo. Esta propiedad varía entre los diferentes elementos y se mide en una escala relativa. Por ejemplo, el flúor es el elemento más electronegativo con un valor de 4.0 en la escala de Pauling, mientras que
-                el cesio es uno de los menos electronegativos con un valor de 0.72. La electronegatividad influye en el tipo de enlace
-                 que se forma entre los átomos: enlaces iónicos se forman entre átomos con grandes diferencias de electronegatividad,
-                 mientras que enlaces covalentes polares se forman entre átomos con diferencias menores.
-             </p>
+// ---------- Ranking compartido (Google Sheets) o local ----------
+async function saveScore(juego, puntaje, tiempo) {
+  const row = { juego, integrantes: team.members, curso: team.curso, puntaje, tiempo, fecha: new Date().toISOString() };
+  if (SCRIPT_URL) {
+    try { await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(row) }); } catch (e) {}
+  } else {
+    const all = JSON.parse(localStorage.getItem("rank2") || "[]"); all.push(row);
+    localStorage.setItem("rank2", JSON.stringify(all));
+  }
+}
+async function loadRanking(juego, box) {
+  let rows = [];
+  try {
+    if (SCRIPT_URL) rows = await (await fetch(SCRIPT_URL + "?juego=" + juego)).json();
+    else rows = JSON.parse(localStorage.getItem("rank2") || "[]").filter(r => r.juego === juego);
+  } catch (e) { box.textContent = "No se pudo cargar el ranking."; return; }
+  rows.sort((a, b) => b.puntaje - a.puntaje || a.tiempo - b.tiempo);
+  if (!rows.length) { box.textContent = "Todavía no hay puntajes. ¡Sé el primero!"; return; }
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  box.innerHTML = "<div style='overflow-x:auto'><table><tr><th>#</th><th>Integrantes</th><th>Curso</th><th>Puntaje</th><th>Tiempo</th></tr>" +
+    rows.slice(0, 30).map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.integrantes)}</td><td>${esc(r.curso)}</td><td>${r.puntaje}</td><td>${r.tiempo} s</td></tr>`).join("") + "</table></div>";
+}
+function refresh() { loadRanking("sopa", $("rankSopa")); loadRanking("quiz", $("rankQuiz")); }
 
-             <p>
-                Los electrones de valencia son los electrones que se encuentran en la capa más externa de un átomo. Estos electrones
-                 son cruciales porque determinan cómo un átomo interactúa y se enlaza con otros átomos.
-             </p>
+// ---------- Registro ----------
+function needTeam() {
+  if (team) return true;
+  $("teamMsg").textContent = "⚠️ Primero registren el equipo (arriba) y luego comiencen.";
+  $("registro").scrollIntoView({ behavior: "smooth" });
+  return false;
+}
+refresh();
+if (!SCRIPT_URL) $("cfgWarn").classList.remove("hide");
+$("btnReg").onclick = () => {
+  const names = ["m1", "m2", "m3"].map(i => $(i).value.trim()).filter(Boolean);
+  const curso = $("curso").value.trim();
+  if (!names.length || !curso) { $("teamMsg").textContent = "Completa al menos un integrante y el curso."; return; }
+  team = { members: names.join(" + "), curso };
+  $("teamMsg").textContent = `¡Bienvenidos, ${team.members}! Ya pueden jugar.`;
+  $("btnReg").textContent = "Cambiar equipo";
+};
 
-             <ul>
-                <li>Ubicación: Están en el nivel de energía más alto del átomo</li>
-                <li>Reactividad: Son los responsables de la formación de enlaces químicos,
-                    ya que pueden ser compartidos, cedidos o ganados durante las reacciones químicas
-                </li>
-                <li>Tipos de enlaces: Participan en la formación de enlaces iónicos, covalentes y metálicos</li>
-             </ul>
+// ---------- Sopa de letras ----------
+const ALL_WORDS = ["HIDROGENO", "OXIGENO", "CARBONO", "NITROGENO", "CALCIO", "HIERRO", "SODIO", "POTASIO", "HELIO", "PLATA", "PLOMO", "LITIO", "BORO", "BROMO", "ARGON", "CESIO", "CROMO", "COBRE"];
+const N = 12, DIRS = [[0, 1], [1, 0], [1, 1], [0, -1], [-1, 0], [-1, -1]];
+let grid, words, sFound, sStart, sTimer, sSec, first;
 
-             <p>
-                La densidad es una propiedad física que expresa la relación entre la masa de un objeto y el volumen que ocupa.
-                En otras palabras, es una medida de cuán compacta está la materia en un espacio determinado. La fórmula para
-                calcular la densidad es:
-             </p>
+$("btnSopa").onclick = () => {
+  if (!needTeam()) return;
+  words = ALL_WORDS.slice().sort(() => Math.random() - .5).slice(0, 10);
+  do { grid = Array.from({ length: N }, () => Array(N).fill("")); } while (!words.every(w => place(w)));
+  const L = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  grid.forEach(r => r.forEach((c, j) => { if (!c) r[j] = L[Math.floor(Math.random() * 26)]; }));
+  const t = $("grid"); t.innerHTML = "";
+  grid.forEach((r, i) => { const tr = t.insertRow(); r.forEach((c, j) => { const td = tr.insertCell(); td.textContent = c; td.dataset.r = i; td.dataset.c = j; }); });
+  $("words").innerHTML = words.map(w => `<span id="w_${w}">${w}</span>`).join("");
+  sFound = []; first = null; sSec = 0; $("sFound").textContent = 0; $("sTime").textContent = 0; $("sopaEnd").textContent = "";
+  $("sopaGame").classList.remove("hide"); $("btnSopa").classList.add("hide");
+  clearInterval(sTimer); sStart = Date.now();
+  sTimer = setInterval(() => { sSec = Math.floor((Date.now() - sStart) / 1000); $("sTime").textContent = sSec; }, 500);
+};
+function place(w) {
+  for (let k = 0; k < 200; k++) {
+    const [dr, dc] = DIRS[Math.floor(Math.random() * DIRS.length)];
+    const r = Math.floor(Math.random() * N), c = Math.floor(Math.random() * N);
+    const er = r + dr * (w.length - 1), ec = c + dc * (w.length - 1);
+    if (er < 0 || er >= N || ec < 0 || ec >= N) continue;
+    let ok = true;
+    for (let i = 0; i < w.length; i++) { const x = grid[r + dr * i][c + dc * i]; if (x && x !== w[i]) { ok = false; break; } }
+    if (!ok) continue;
+    for (let i = 0; i < w.length; i++) grid[r + dr * i][c + dc * i] = w[i];
+    return true;
+  }
+  return false;
+}
+$("grid").addEventListener("click", e => {
+  const td = e.target.closest("td"); if (!td) return;
+  const r = +td.dataset.r, c = +td.dataset.c;
+  if (!first) { first = { r, c, td }; td.classList.add("sel"); return; }
+  first.td.classList.remove("sel");
+  const dr = r - first.r, dc = c - first.c, len = Math.max(Math.abs(dr), Math.abs(dc)) + 1;
+  if (dr === 0 && dc === 0) { first = null; return; }
+  if (dr === 0 || dc === 0 || Math.abs(dr) === Math.abs(dc)) {
+    const sr = Math.sign(dr), sc = Math.sign(dc); let s = "", cells = [];
+    for (let i = 0; i < len; i++) { const rr = first.r + sr * i, cc = first.c + sc * i; s += grid[rr][cc]; cells.push([rr, cc]); }
+    const w = words.find(x => x === s && !sFound.includes(x));
+    if (w) {
+      sFound.push(w); $("w_" + w).classList.add("ok"); $("sFound").textContent = sFound.length;
+      cells.forEach(([rr, cc]) => $("grid").rows[rr].cells[cc].classList.add("found"));
+      if (sFound.length === 10) endSopa();
+    }
+  }
+  first = null;
+});
+function endSopa() {
+  clearInterval(sTimer); sSec = Math.floor((Date.now() - sStart) / 1000);
+  const pts = Math.max(100, 1000 - sSec * 2);
+  $("sopaEnd").textContent = `¡Terminaron! Tiempo: ${sSec} s · Puntaje: ${pts}/1000. Hagan una captura de pantalla.`;
+  $("btnSopa").textContent = "Jugar de nuevo"; $("btnSopa").classList.remove("hide");
+  saveScore("sopa", pts, sSec).then(() => setTimeout(refresh, 1500));
+}
 
-             <div class="densidad">
-                <math xmlns="http://www.w3.org/1998/Math/MathML">
-                    <mfrac>
-                        <mi>Masa</mi>
-                        <mi>Volumen</mi>
-                    </mfrac>
-                </math>
-
-             </div>
-
-             <p>
-                La unidad de medida de la densidad en el Sistema Internacional de Unidades (SI) es el kilogramo por metro cúbico (kg/m³).
-                Sin embargo, también se utilizan otras unidades como el gramo por centímetro cúbico (g/cm³) o el gramo por mililitro (g/mL).
-             </p>
-
-             <h3>Pueden también consultar las siguientes págiinas web si quieres mas información</h3>
-
-            <ul>
-                <li><a href="https://ptable.com/?lang=es">Ptable; Tabla periodica interactiva</a></li>
-                <li><a href="https://es.periodic-table.io/">Periodic table:Elementos quimicos y sus propiedades</a></li>
-                <li> <a href="https://es.wikipedia.org/wiki/Tabla_peri%C3%B3dica_de_los_elementos">Explicación completa sobre tabla periódica</a></li>
-
-            </ul> 
-            
-           
-        </section>
-        <section id="user-info">
-            <h3>Realiza las actividades sobre tabla periódica, luego haz una captura de pantalla</h3>
-            <h3>Identifícate para participar</h3>
-            <form id="user-form">
-                <label for="first-name">Nombre:</label>
-                <input type="text" id="first-name" name="first-name" required>
-                <label for="last-name">Apellido:</label>
-                <input type="text" id="last-name" name="last-name" required>
-                <button type="submit">Comenzar Juego</button>
-            </form>
-        </section>
-        <section id="game" style="display: none;">
-            <h2>Juego</h2>
-            <div id="question-container"></div>
-            <div id="score-container">
-               <!-- <p>Puntuación: <span id="score">0</span></p>-->
-            </div>
-        </section>
-        <section id="scoreboard">
-            <h2>Tabla de Puntuaciones</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Puntuación</th>
-                    </tr>
-                </thead>
-                <tbody id="scoreboard-body">
-                    <!-- Aquí se agregarán las filas con los datos de los jugadores -->
-                </tbody>
-            </table>
-        </section>
-
-<h3>Juega antes de hacer la evaluación final
-        <a href="https://es.educaplay.com/recursos-educativos/14962724-tabla_periodica_elementos.html">JUEGA Y LOGRA EL PRIMER PUESTO</a></h3>
-<!-- Codigo google forms y evaluacion final-->
-
-<h3>Actividad 3: Ingresa al enlace y completa el formulario: <a href="https://forms.gle/wQearj4KhPDS8w8D8">Evaluación final</a></h3> 
-
-       <!--Fin del codigo google forms-->
-
-    </main>
-
-    <footer>
-        <p>Creado por [Profesor: Brandan, Jorge + IA]</p>
-    </footer>
-    <script src="script.js"></script>
-    
+// ---------- Juego de preguntas ----------
+const Q = [
+["¿Cuál es el número atómico del Hidrógeno?", ["1", "2", "3", "4"], 0],
+["¿Cuál es el símbolo del Oxígeno?", ["O", "Ox", "O2", "O3"], 0],
+["¿Quién creó la primera tabla periódica?", ["Isaac Newton", "Albert Einstein", "Dmitri Mendeléyev", "Marie Curie"], 2],
+["¿Cuántos grupos tiene la tabla periódica?", ["8", "16", "18", "10"], 2],
+["Un ejemplo de metal es:", ["C", "N", "Pb", "Po"], 2],
+["Un ejemplo de no metal es:", ["C", "Mn", "Pb", "He"], 0],
+["Un ejemplo de metaloide es:", ["C", "Mn", "Pb", "Ge"], 3],
+["La masa atómica redondeada del Co es:", ["59", "27", "58", "8"], 0],
+["Un ejemplo de gas noble es:", ["C", "Ar", "Pb", "Po"], 1],
+["La tabla periódica tiene:", ["6 períodos", "7 períodos", "18 períodos", "8 períodos"], 1],
+["El Z del Ca es:", ["20", "30", "40", "2"], 0],
+["El número atómico se representa con la letra:", ["E", "N", "Z", "A"], 2],
+["El número másico se representa con la letra:", ["E", "N", "Z", "A"], 3],
+["El número de neutrones se representa con la letra:", ["E", "N", "Z", "A"], 1],
+["El número de neutrones (N) se calcula con:", ["A − Z", "A + Z", "Z − A", "Z × A"], 0],
+["El número atómico representa:", ["Número de neutrones", "Número de protones", "Masa del átomo", "Núcleo"], 1],
+["La estructura cristalina del hierro es:", ["Cúbica de cuerpo centrado", "Cúbica simple", "Cúbica de cara centrada", "Hexagonal"], 0],
+["El Xe tiene un valor de electronegatividad igual a:", ["0", "3,06", "54", "8"], 0],
+["El Cl tiene electronegatividad 3,0 y el Ca 1,0. ¿Quién atrae más al electrón?", ["Cl", "Ca"], 0],
+["Los electrones de valencia del S son:", ["8", "5", "6", "32"], 2],
+["La distribución de electrones en niveles del Ca es:", ["8-8-2", "2-6-8-2", "8-2", "2-8-8-2"], 3],
+["Un ejemplo de metal pobre es:", ["He", "Bi", "Po", "Si"], 1],
+["La masa atómica redondeada del Hg es:", ["201", "200", "202", "199"], 0],
+["La ubicación del Cr es:", ["Grupo 6, período 4", "Grupo 4, período 6", "Grupo 4, período 16", "Grupo 10, período 4"], 0],
+["La densidad del Os es (g/cm³):", ["23", "22,6", "20,2", "26,0"], 1],
+["Una unidad de medida de la densidad es:", ["m/mL", "L/mL", "g/mL", "km/h"], 2],
+["La configuración electrónica del O es:", ["1s² 2s² 2p⁴", "1s² 2s² 2p⁵", "1s² 2s² 3s⁶", "1s² 2s² 2p³"], 0],
+["Los símbolos químicos se escriben siempre con mayúsculas:", ["Verdadero", "Falso"], 1],
+["La tabla periódica es:", ["Un registro ordenado de los elementos químicos", "Una tabla con letras y números al azar", "Un documento de recetas", "Una lista de compuestos"], 0],
+["Un elemento que es líquido a temperatura ambiente es:", ["Hg", "Fe", "C", "Ca"], 0]
+];
+let qs, qi, qScore, qStart, qTimer, qSec;
+$("btnQuiz").onclick = () => {
+  if (!needTeam()) return;
+  qs = Q.slice().sort(() => Math.random() - .5).slice(0, 20);
+  qi = 0; qScore = 0; qStart = Date.now(); qSec = 0;
+  $("btnQuiz").classList.add("hide"); $("quizGame").classList.remove("hide");
+  clearInterval(qTimer);
+  qTimer = setInterval(() => { qSec = Math.floor((Date.now() - qStart) / 1000); $("qTime").textContent = qSec; }, 500);
+  showQ();
+};
+function showQ() {
+  const q = qs[qi]; $("qNum").textContent = qi + 1;
+  const opts = q[1].map((t, i) => ({ t, ok: i === q[2] })); if (opts.length > 2) opts.sort(() => Math.random() - .5);
+  const box = $("qBox"); box.innerHTML = `<p><b>${q[0]}</b></p>`;
+  opts.forEach(o => {
+    const b = document.createElement("button"); b.className = "opt"; b.textContent = o.t;
+    b.onclick = () => { if (o.ok) qScore++; qi++; qi < qs.length ? showQ() : endQ(); };
+    box.appendChild(b);
+  });
+}
+function endQ() {
+  clearInterval(qTimer); qSec = Math.floor((Date.now() - qStart) / 1000);
+  const pts = Math.round(qScore / qs.length * 100);
+  $("qBox").innerHTML = `<p class="msg">Aciertos: ${qScore}/${qs.length} · Puntaje: ${pts}/100 · Tiempo: ${qSec} s<br>${pts >= 60 ? "🎉 ¡Aprobaron!" : "Todavía no alcanzan los 60 puntos. ¡Vuelvan a intentarlo!"}<br>Hagan una captura de pantalla.</p>`;
+  $("btnQuiz").textContent = "Jugar de nuevo"; $("btnQuiz").classList.remove("hide"); $("quizGame").classList.remove("hide");
+  saveScore("quiz", pts, qSec).then(() => setTimeout(refresh, 1500));
+}
+</script>
 </body>
 </html>
-
