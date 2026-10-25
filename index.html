@@ -14,6 +14,7 @@ h1,h2{text-align:center;margin:.3em 0}
 h2{color:#1d7a31}
 button{margin:4px;padding:10px 18px;background:#007BFF;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1em}
 button:hover{background:#0056b3}
+button:disabled{opacity:.5;cursor:not-allowed}
 input,select{padding:8px;margin:3px;border:1px solid #bbb;border-radius:6px;font-size:1em;max-width:100%}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{border:1px solid #ddd;padding:6px;text-align:left}
@@ -34,6 +35,8 @@ th{background:#f2f2f2}
 .msg{text-align:center;font-weight:bold;color:#1d7a31}
 .warn{background:#fff3cd;padding:8px;border-radius:6px;font-size:.9em}
 .hide{display:none}
+.lq{margin:12px 0 4px;font-weight:bold}
+.lo{display:block;margin:4px 0;cursor:pointer}
 </style>
 </head>
 <body>
@@ -66,6 +69,14 @@ th{background:#f2f2f2}
 <button id="btnReg">Registrar equipo</button>
 <div id="teamMsg" class="msg"></div>
 <div id="cfgWarn" class="warn hide">⚠️ Falta configurar SCRIPT_URL: los puntajes se guardan solo en este dispositivo.</div>
+</section>
+
+<section id="lectura">
+<h2>✅ Control de lectura</h2>
+<p>Antes de jugar tienen que leer los conceptos de arriba. Respondan 4 preguntas sobre la teoría: tienen que acertar las 4 para habilitar los juegos.</p>
+<p id="lecMsg" class="msg"></p>
+<div style="text-align:center"><button id="btnLec" disabled>Hacer el control de lectura</button></div>
+<div id="lecQ" class="hide"></div>
 </section>
 
 <section id="sopa">
@@ -138,10 +149,18 @@ function refresh() { loadRanking("sopa", $("rankSopa")); loadRanking("quiz", $("
 
 // ---------- Registro ----------
 function needTeam() {
-  if (team) return true;
-  $("teamMsg").textContent = "⚠️ Primero registren el equipo (arriba) y luego comiencen.";
-  $("registro").scrollIntoView({ behavior: "smooth" });
-  return false;
+  if (!team) {
+    $("teamMsg").textContent = "⚠️ Primero registren el equipo (arriba) y luego comiencen.";
+    $("registro").scrollIntoView({ behavior: "smooth" });
+    return false;
+  }
+  if (!leido()) {
+    lecNote = "⚠️ Primero aprueben el control de lectura. ";
+    updLec();
+    $("lectura").scrollIntoView({ behavior: "smooth" });
+    return false;
+  }
+  return true;
 }
 refresh();
 if (!SCRIPT_URL) $("cfgWarn").classList.remove("hide");
@@ -152,7 +171,66 @@ $("btnReg").onclick = () => {
   team = { members: names.join(" + "), curso };
   $("teamMsg").textContent = `¡Bienvenidos, ${team.members}! Ya pueden jugar.`;
   $("btnReg").textContent = "Cambiar equipo";
+  updLec();
 };
+
+// ---------- Control de lectura ----------
+const MINLEC = 60; // segundos mínimos de lectura (cuentan solo mientras la teoría está en pantalla)
+const LEC = [
+["El número atómico (Z) es la cantidad de…", "protones", "neutrones", "niveles de energía", "grupos"],
+["Para calcular los neutrones se usa…", "N = A − Z", "N = A + Z", "N = Z − A", "N = A × Z"],
+["El número másico (A) es igual a…", "protones + neutrones", "protones − neutrones", "solo los electrones", "solo los neutrones"],
+["¿Cuál es el símbolo correcto del cobalto?", "Co", "CO", "co", "cO"],
+["¿Quién creó la primera tabla periódica en 1869?", "Mendeléyev", "Newton", "Einstein", "Curie"],
+["La tabla periódica tiene 18…", "grupos (columnas)", "períodos (filas)", "gases nobles", "metales"],
+["Los períodos de la tabla periódica indican…", "los niveles de energía", "la cantidad de neutrones", "el color de los elementos", "el año de descubrimiento"],
+["Los gases nobles están en el grupo…", "18", "1", "7", "10"],
+["La electronegatividad es la capacidad de un átomo de…", "atraer electrones en un enlace", "perder neutrones", "cambiar de estado", "aumentar su masa"],
+["El elemento más electronegativo es el…", "flúor", "cesio", "sodio", "helio"],
+["Los electrones de valencia están en…", "el último nivel de energía", "el núcleo", "el primer nivel de energía", "los neutrones"],
+["La densidad se calcula como…", "masa / volumen", "volumen / masa", "masa × volumen", "masa + volumen"]
+];
+let tl = 0, lecNote = "", lecIntentos = 0, teoVisible = false;
+const lecKey = () => team ? "lec|" + (team.members + "|" + team.curso).toLowerCase() : "";
+const leido = () => !!team && !!localStorage.getItem(lecKey());
+const mez = a => a.slice().sort(() => Math.random() - .5);
+const escH = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+new IntersectionObserver(es => { teoVisible = es[0].isIntersecting; }, { threshold: .2 }).observe($("teoria"));
+setInterval(() => { if (!document.hidden && teoVisible) { tl++; updLec(); } }, 1000);
+function updLec() {
+  if (!$("lecQ").classList.contains("hide")) return;
+  const m = $("lecMsg"), b = $("btnLec");
+  if (leido()) { m.textContent = "✔ Lectura aprobada. Ya pueden jugar."; b.textContent = "Ir a jugar"; b.disabled = false; return; }
+  b.textContent = "Hacer el control de lectura";
+  if (!team) { m.textContent = lecNote + "Registren primero el equipo (arriba)."; b.disabled = true; }
+  else if (tl < MINLEC) { m.textContent = lecNote + `Lean con atención los conceptos: el control se habilita en ${MINLEC - tl} s (el tiempo cuenta mientras la teoría está en pantalla).`; b.disabled = true; }
+  else { m.textContent = lecNote + "Respondan 4 preguntas sobre la teoría. Tienen que acertar las 4 para poder jugar."; b.disabled = false; }
+}
+function openLec() {
+  lecNote = "";
+  const qs = mez(LEC).slice(0, 4).map(([q, a, ...w]) => ({ q, a, o: mez([a, ...w]) }));
+  const box = $("lecQ"); box.classList.remove("hide"); $("btnLec").classList.add("hide");
+  $("lecMsg").textContent = "Elijan una opción en cada pregunta.";
+  box.innerHTML = qs.map((x, i) => `<p class="lq">${i + 1}. ${escH(x.q)}</p>` + x.o.map(o => `<label class="lo"><input type="radio" name="lq${i}" value="${escH(o)}"> ${escH(o)}</label>`).join("")).join("") + `<p style="text-align:center"><button id="lecOk">Enviar respuestas</button></p>`;
+  $("lecOk").onclick = () => {
+    const sel = qs.map((x, i) => { const c = box.querySelector(`input[name=lq${i}]:checked`); return c ? c.value : null; });
+    if (sel.includes(null)) { $("lecMsg").textContent = "Respondan las 4 preguntas."; return; }
+    const ok = sel.filter((v, i) => v === qs[i].a).length;
+    lecIntentos++;
+    box.classList.add("hide"); $("btnLec").classList.remove("hide");
+    if (ok === 4) {
+      localStorage.setItem(lecKey(), JSON.stringify({ t: tl, intentos: lecIntentos, f: Date.now() }));
+      saveScore("lectura", 4, tl);
+      lecIntentos = 0;
+    } else {
+      tl = MINLEC - 20;
+      lecNote = `Acertaron ${ok} de 4. Necesitan las 4. Vuelvan a leer la teoría y prueben de nuevo con preguntas nuevas. `;
+    }
+    updLec();
+  };
+}
+$("btnLec").onclick = () => { if (leido()) $("sopa").scrollIntoView({ behavior: "smooth" }); else openLec(); };
+updLec();
 
 // ---------- Sopa de letras ----------
 const ALL_WORDS = ["HIDROGENO", "OXIGENO", "CARBONO", "NITROGENO", "CALCIO", "HIERRO", "SODIO", "POTASIO", "HELIO", "PLATA", "PLOMO", "LITIO", "BORO", "BROMO", "ARGON", "CESIO", "CROMO", "COBRE"];
